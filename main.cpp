@@ -2,6 +2,7 @@
 #include "Hash_table.h"
 #include <iostream>
 #include <sstream>
+#include <chrono>
 
 // Utility function to split a string by a delimiter
 std::vector<std::string> split(const std::string& str, char delimiter) {
@@ -181,7 +182,14 @@ void menuHashTable(HashTable& hashTable) {
             cin >> state;
             cout << "Enter Zipcode: ";
             cin >> zipcode;
+
+            chrono::time_point<chrono::system_clock> start, end;
+            start = chrono::system_clock::now();
             hashTable.insert(TrafficAccident(id, severity, distance, city, state, zipcode));
+            end = chrono::system_clock::now();
+            chrono::duration<double> elapsed_seconds = end - start;
+            cout << "\nElapsed Time: " << elapsed_seconds.count() << "s" << endl;
+
         } else if (choice == 2) {
             cout << "Do you want to search by:\n";
             cout << "1. ID\n";
@@ -203,30 +211,65 @@ void menuHashTable(HashTable& hashTable) {
             } else if (searchType == 2) {
                 cout << "Enter Severity: ";
                 cin >> severity;
+
+                chrono::time_point<chrono::system_clock> start, end;
+                start = chrono::system_clock::now();
                 HashTable results = hashTable.searchBySeverity(severity);
+                end = chrono::system_clock::now();
+                chrono::duration<double> elapsed_seconds = end - start;
                 results.display();
+                cout << "\nElapsed Time: " << elapsed_seconds.count() << "s" << endl;
+
             } else if (searchType == 3) {
                 cout << "Enter City: ";
                 cin >> city;
+
+                chrono::time_point<chrono::system_clock> start, end;
+                start = chrono::system_clock::now();
                 HashTable results = hashTable.searchByCity(city);
+                end = chrono::system_clock::now();
+                chrono::duration<double> elapsed_seconds = end - start;
                 results.display();
+                cout << "\nElapsed Time: " << elapsed_seconds.count() << "s" << endl;
+
             } else if (searchType == 4) {
+
+
                 cout << "Enter State: ";
                 cin >> state;
+
+                chrono::time_point<chrono::system_clock> start, end;
+                start = chrono::system_clock::now();
                 HashTable results = hashTable.searchByState(state);
+                end = chrono::system_clock::now();
+                chrono::duration<double> elapsed_seconds = end - start;
                 results.display();
+                cout << "\nElapsed Time: " << elapsed_seconds.count() << "s" << endl;
+
             } else if (searchType == 5) {
                 cout << "Enter Zipcode: ";
                 cin >> zipcode;
+                chrono::time_point<chrono::system_clock> start, end;
+                start = chrono::system_clock::now();
                 HashTable results = hashTable.searchByZipcode(zipcode);
+                end = chrono::system_clock::now();
+                chrono::duration<double> elapsed_seconds = end - start;
                 results.display();
+                cout << "\nElapsed Time: " << elapsed_seconds.count() << "s" << endl;
             } else {
                 cout << "Invalid search type, please try again." << endl;
             }
         } else if (choice == 3) {
             cout << "Enter ID: ";
             cin >> id;
+
+            chrono::time_point<chrono::system_clock> start, end;
+            start = chrono::system_clock::now();
             hashTable.remove(id);
+            end = chrono::system_clock::now();
+            chrono::duration<double> elapsed_seconds = end - start;
+            cout << "\nElapsed Time: " << elapsed_seconds.count() << "s" << endl;
+
         } else if (choice == 4) {
             hashTable.display();
         } else if (choice == 5) {
