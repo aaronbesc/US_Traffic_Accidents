@@ -2,6 +2,7 @@
 #include "Hash_table.h"
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <chrono>
 
 // Utility function to split a string by a delimiter
@@ -101,57 +102,178 @@ void readCSVHashTable(const std::string& filename, HashTable& hashTable) {
 }
 
 void menuRedBlackTree(RedBlackTree& rbTree) {
-    int choice = 0;
-    string id, city, state, zipcode;
+    int choice = 0, searchType;
+    std::string id, city, state, zipcode;
     int severity;
     double distance;
 
-    while (choice != 5) {
-        cout << "\nRed Black Tree Menu:\n";
-        cout << "1. Insert\n";
-        cout << "2. Search by ID\n";
-        cout << "3. Remove by ID\n";
-        cout << "4. Display\n";
-        cout << "5. Exit\n";
-        cout << "Enter your choice: ";
-        cin >> choice;
+    while (choice != 6) {
+        std::cout << "\nRed Black Tree Menu:\n";
+        std::cout << "1. Insert\n";
+        std::cout << "2. Search\n";
+        std::cout << "3. Remove by ID\n";
+        std::cout << "4. Display\n";
+        std::cout << "5. Filter\n";
+        std::cout << "6. Exit\n";
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
 
         if (choice == 1) {
-            cout << "Enter ID: ";
-            cin >> id;
-            cout << "Enter Severity: ";
-            cin >> severity;
-            cout << "Enter Distance: ";
-            cin >> distance;
-            cout << "Enter City: ";
-            cin >> city;
-            cout << "Enter State: ";
-            cin >> state;
-            cout << "Enter Zipcode: ";
-            cin >> zipcode;
+            std::cout << "Enter ID: ";
+            std::cin >> id;
+            std::cout << "Enter Severity: ";
+            std::cin >> severity;
+            std::cout << "Enter Distance: ";
+            std::cin >> distance;
+            std::cout << "Enter City: ";
+            std::cin >> city;
+            std::cout << "Enter State: ";
+            std::cin >> state;
+            std::cout << "Enter Zipcode: ";
+            std::cin >> zipcode;
+
+            auto start = std::chrono::system_clock::now();
             rbTree.insert(id, severity, distance, city, state, zipcode);
+            auto end = std::chrono::system_clock::now();
+            std::chrono::duration<double> elapsed_seconds = end - start;
+            std::cout << "\nElapsed Time: " << elapsed_seconds.count() << "s" << std::endl;
         } else if (choice == 2) {
-            cout << "Enter ID: ";
-            cin >> id;
-            if (rbTree.search(id)) {
-                cout << "ID " << id << " found in the tree." << endl;
+            std::cout << "Do you want to search by:\n";
+            std::cout << "1. ID\n";
+            std::cout << "2. Severity\n";
+            std::cout << "3. City\n";
+            std::cout << "4. State\n";
+            std::cout << "5. Zipcode\n";
+            std::cout << "Enter your choice: ";
+            std::cin >> searchType;
+
+            auto start = std::chrono::system_clock::now();
+            std::vector<Node*> results;
+            if (searchType == 1) {
+                std::cout << "Enter ID: ";
+                std::cin >> id;
+                Node* result = rbTree.search(id);
+                auto end = std::chrono::system_clock::now();
+                std::chrono::duration<double> elapsed_seconds = end - start;
+                if (result) {
+                    std::cout << "ID: " << result->ID << ", Severity: " << result->severity << ", Distance: " << result->distance
+                              << ", City: " << result->city << ", State: " << result->state << ", Zipcode: " << result->zipcode << std::endl;
+                } else {
+                    std::cout << "ID " << id << " not found in the tree." << std::endl;
+                }
+                std::cout << "\nElapsed Time: " << elapsed_seconds.count() << "s" << std::endl;
             } else {
-                cout << "ID " << id << " not found in the tree." << endl;
+                if (searchType == 2) {
+                    std::cout << "Enter Severity: ";
+                    std::cin >> severity;
+                    results = rbTree.searchBySeverity(severity);
+                } else if (searchType == 3) {
+                    std::cout << "Enter City: ";
+                    std::cin >> city;
+                    results = rbTree.searchByCity(city);
+                } else if (searchType == 4) {
+                    std::cout << "Enter State: ";
+                    std::cin >> state;
+                    results = rbTree.searchByState(state);
+                } else if (searchType == 5) {
+                    std::cout << "Enter Zipcode: ";
+                    std::cin >> zipcode;
+                    results = rbTree.searchByZipcode(zipcode);
+                } else {
+                    std::cout << "Invalid search type, please try again." << std::endl;
+                    continue;
+                }
+                auto end = std::chrono::system_clock::now();
+                std::chrono::duration<double> elapsed_seconds = end - start;
+
+                if (!results.empty()) {
+                    for (const auto& node : results) {
+                        std::cout << "ID: " << node->ID << ", Severity: " << node->severity << ", Distance: " << node->distance
+                                  << ", City: " << node->city << ", State: " << node->state << ", Zipcode: " << node->zipcode << std::endl;
+                    }
+                } else {
+                    std::cout << "No results found." << std::endl;
+                }
+                std::cout << "\nElapsed Time: " << elapsed_seconds.count() << "s" << std::endl;
             }
         } else if (choice == 3) {
-            cout << "Enter ID: ";
-            cin >> id;
-            //rbTree.remove(id);
+            std::cout << "Enter ID: ";
+            std::cin >> id;
+            auto start = std::chrono::system_clock::now();
+            rbTree.remove(id);
+            auto end = std::chrono::system_clock::now();
+            std::chrono::duration<double> elapsed_seconds = end - start;
+            std::cout << "\nElapsed Time: " << elapsed_seconds.count() << "s" << std::endl;
         } else if (choice == 4) {
+            auto start = std::chrono::system_clock::now();
             rbTree.inorder();
+            auto end = std::chrono::system_clock::now();
+            std::chrono::duration<double> elapsed_seconds = end - start;
+            std::cout << "\nElapsed Time: " << elapsed_seconds.count() << "s" << std::endl;
         } else if (choice == 5) {
-            cout << "Exiting Red Black Tree Menu." << endl;
+            RedBlackTree filteredTree = rbTree;
+            char continueFiltering = 'y';
+            while (continueFiltering == 'y' || continueFiltering == 'Y') {
+                std::cout << "Choose a filter:\n";
+                std::cout << "1. Severity\n";
+                std::cout << "2. City\n";
+                std::cout << "3. State\n";
+                std::cout << "4. Zipcode\n";
+                std::cout << "Enter your choice: ";
+                std::cin >> searchType;
+
+                auto start = std::chrono::system_clock::now();
+                if (searchType == 1) {
+                    std::cout << "Enter Severity: ";
+                    std::cin >> severity;
+                    filteredTree = RedBlackTree();
+                    for (auto& node : rbTree.searchBySeverity(severity)) {
+                        filteredTree.insert(node->ID, node->severity, node->distance, node->city, node->state, node->zipcode);
+                    }
+                } else if (searchType == 2) {
+                    std::cout << "Enter City: ";
+                    std::cin >> city;
+                    filteredTree = RedBlackTree();
+                    for (auto& node : rbTree.searchByCity(city)) {
+                        filteredTree.insert(node->ID, node->severity, node->distance, node->city, node->state, node->zipcode);
+                    }
+                } else if (searchType == 3) {
+                    std::cout << "Enter State: ";
+                    std::cin >> state;
+                    filteredTree = RedBlackTree();
+                    for (auto& node : rbTree.searchByState(state)) {
+                        filteredTree.insert(node->ID, node->severity, node->distance, node->city, node->state, node->zipcode);
+                    }
+                } else if (searchType == 4) {
+                    std::cout << "Enter Zipcode: ";
+                    std::cin >> zipcode;
+                    filteredTree = RedBlackTree();
+                    for (auto& node : rbTree.searchByZipcode(zipcode)) {
+                        filteredTree.insert(node->ID, node->severity, node->distance, node->city, node->state, node->zipcode);
+                    }
+                } else {
+                    std::cout << "Invalid search type, please try again." << std::endl;
+                    continue;
+                }
+                auto end = std::chrono::system_clock::now();
+                std::chrono::duration<double> elapsed_seconds = end - start;
+
+                filteredTree.inorder();
+                std::cout << "\nElapsed Time: " << elapsed_seconds.count() << "s" << std::endl;
+
+                std::cout << "Do you want to apply another filter? (y/n): ";
+                std::cin >> continueFiltering;
+            }
+        } else if (choice == 6) {
+            std::cout << "Exiting Red Black Tree Menu." << std::endl;
             break;
         } else {
-            cout << "Invalid choice, please try again." << endl;
+            std::cout << "Invalid choice, please try again." << std::endl;
         }
     }
 }
+
+
 
 void menuHashTable(HashTable& hashTable) {
     int choice = 0, searchType;
@@ -159,7 +281,7 @@ void menuHashTable(HashTable& hashTable) {
     int severity;
     double distance;
 
-    while (choice != 6){
+    while (choice != 5){
         cout << "\nHash Table Menu:\n";
         cout << "1. Insert\n";
         cout << "2. Search\n";
