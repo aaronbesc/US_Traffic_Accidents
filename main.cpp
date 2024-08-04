@@ -165,7 +165,8 @@ void menuHashTable(HashTable& hashTable) {
         cout << "2. Search\n";
         cout << "3. Remove by ID\n";
         cout << "4. Display\n";
-        cout << "5. Exit\n";
+        cout << "5. Filter\n";
+        cout << "6. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
@@ -271,8 +272,51 @@ void menuHashTable(HashTable& hashTable) {
             cout << "\nElapsed Time: " << elapsed_seconds.count() << "s" << endl;
 
         } else if (choice == 4) {
+            chrono::time_point<chrono::system_clock> start, end;
+            start = chrono::system_clock::now();
             hashTable.display();
+            end = chrono::system_clock::now();
+            chrono::duration<double> elapsed_seconds = end - start;
+            cout << "\nElapsed Time: " << elapsed_seconds.count() << "s" << endl;
         } else if (choice == 5) {
+            HashTable filteredTable = hashTable;
+            char continueFiltering = 'y';
+            while (continueFiltering == 'y' || continueFiltering == 'Y') {
+                cout << "Choose a filter:\n";
+                cout << "1. Severity\n";
+                cout << "2. City\n";
+                cout << "3. State\n";
+                cout << "4. Zipcode\n";
+                cout << "Enter your choice: ";
+                cin >> searchType;
+
+                if (searchType == 1) {
+                    cout << "Enter Severity: ";
+                    cin >> severity;
+                    filteredTable = filteredTable.searchBySeverity(severity);
+                } else if (searchType == 2) {
+                    cout << "Enter City: ";
+                    cin >> city;
+                    filteredTable = filteredTable.searchByCity(city);
+                } else if (searchType == 3) {
+                    cout << "Enter State: ";
+                    cin >> state;
+                    filteredTable = filteredTable.searchByState(state);
+                } else if (searchType == 4) {
+                    cout << "Enter Zipcode: ";
+                    cin >> zipcode;
+                    filteredTable = filteredTable.searchByZipcode(zipcode);
+                } else {
+                    cout << "Invalid search type, please try again." << endl;
+                }
+
+                cout << "Do you want to apply another filter? (y/n): ";
+                cin >> continueFiltering;
+            }
+
+            filteredTable.display();
+
+        } else if (choice == 6) {
             cout <<"Exiting Hash Table Menu." << endl;
             break;
         } else {
