@@ -159,7 +159,7 @@ void menuHashTable(HashTable& hashTable) {
     int severity;
     double distance;
 
-    while (choice != 5){
+    while (choice != 6){
         cout << "\nHash Table Menu:\n";
         cout << "1. Insert\n";
         cout << "2. Search\n";
