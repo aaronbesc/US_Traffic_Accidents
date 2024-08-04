@@ -1,40 +1,55 @@
+#ifndef REDANDBLACK_H
+#define REDANDBLACK_H
+
 #include <iostream>
-#include <fstream>
-#include <sstream>
-#include <vector>
 #include <string>
+#include <vector>
 
 enum Color { RED, BLACK };
 
 struct Node {
-    std::string ID; // Unique identifier for the accident (changed to string)
-    int severity; // Severity of the accident
-    double distance; // Distance related to the accident
-    std::string city; // City where the accident occurred
-    std::string state; // State where the accident occurred
-    std::string zipcode; // Zipcode where the accident occurred
+    std::string ID;
+    int severity;
+    double distance;
+    std::string city;
+    std::string state;
+    std::string zipcode;
     Color color;
     Node *left, *right, *parent;
 
-    Node(const std::string& id, int sev, double dist, const std::string& c, const std::string& st, const std::string& zip)
-            : ID(id), severity(sev), distance(dist), city(c), state(st), zipcode(zip), color(RED),
-              left(nullptr), right(nullptr), parent(nullptr) {}
+    Node(const std::string& id, int sev, double dist, const std::string& cty, const std::string& st, const std::string& zip)
+            : ID(id), severity(sev), distance(dist), city(cty), state(st), zipcode(zip), color(RED), left(nullptr), right(nullptr), parent(nullptr) {}
 };
 
 class RedBlackTree {
 private:
     Node* root;
 
-    void rotateLeft(Node*&);
-    void rotateRight(Node*&);
-    void fixInsert(Node*&);
-    void inorderHelper(Node*);
+    void rotateLeft(Node*& node);
+    void rotateRight(Node*& node);
+    void fixInsert(Node*& node);
+    void fixDelete(Node*& node);
     Node* searchTreeHelper(Node* node, const std::string& id);
-    Node* minimum(Node* node);
+    void inorderHelper(Node* node);
+    void findHelper(Node* node, int severity, const std::string& city, const std::string& state, const std::string& zipcode, std::vector<Node*>& result);
+    void transplant(Node* u, Node* v);
 
 public:
     RedBlackTree();
     void insert(const std::string& id, int severity, double distance, const std::string& city, const std::string& state, const std::string& zipcode);
-    void inorder();
+    void remove(const std::string& id);
     Node* search(const std::string& id);
+    Node* minimum(Node* node);
+    void inorder();
+    std::vector<Node*> find(int severity, const std::string& city, const std::string& state, const std::string& zipcode);
+
+    // New functions
+    bool isEmpty() const;
+    int getSize() const;
+    std::vector<Node*> searchBySeverity(int severity) const;
+    std::vector<Node*> searchByCity(const std::string& city) const;
+    std::vector<Node*> searchByState(const std::string& state) const;
+    std::vector<Node*> searchByZipcode(const std::string& zipcode) const;
 };
+
+#endif // REDANDBLACK_H
