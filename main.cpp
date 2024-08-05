@@ -5,6 +5,15 @@
 #include <fstream>
 #include <chrono>
 
+bool isAlphanumeric(const std::string &str) {
+    for (char ch : str) {
+        if (!std::isalnum(static_cast<unsigned char>(ch))) {
+            return false;
+        }
+    }
+    return true;
+}
+
 // Utility function to split a string by a delimiter
 std::vector<std::string> split(const std::string& str, char delimiter) {
     std::vector<std::string> tokens;
@@ -226,6 +235,11 @@ void menuRedBlackTree(RedBlackTree& rbTree) {
                 if (searchType == 1) {
                     std::cout << "Enter Severity: ";
                     std::cin >> severity;
+                    if (!isAlphanumeric(to_string(severity))){
+                        cout << "Input not valid" << endl;
+                        cin.clear();
+                        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    }
                     filteredTree = RedBlackTree();
                     for (auto& node : rbTree.searchBySeverity(severity)) {
                         filteredTree.insert(node->ID, node->severity, node->distance, node->city, node->state, node->zipcode);
@@ -233,6 +247,11 @@ void menuRedBlackTree(RedBlackTree& rbTree) {
                 } else if (searchType == 2) {
                     std::cout << "Enter City: ";
                     std::cin >> city;
+                    if (!isAlphanumeric(city)){
+                        cout << "Input not valid" << endl;
+                        cin.clear();
+                        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    }
                     filteredTree = RedBlackTree();
                     for (auto& node : rbTree.searchByCity(city)) {
                         filteredTree.insert(node->ID, node->severity, node->distance, node->city, node->state, node->zipcode);
@@ -240,6 +259,11 @@ void menuRedBlackTree(RedBlackTree& rbTree) {
                 } else if (searchType == 3) {
                     std::cout << "Enter State: ";
                     std::cin >> state;
+                    if (!isAlphanumeric(state)){
+                        cout << "Input not valid" << endl;
+                        cin.clear();
+                        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    }
                     filteredTree = RedBlackTree();
                     for (auto& node : rbTree.searchByState(state)) {
                         filteredTree.insert(node->ID, node->severity, node->distance, node->city, node->state, node->zipcode);
@@ -247,6 +271,11 @@ void menuRedBlackTree(RedBlackTree& rbTree) {
                 } else if (searchType == 4) {
                     std::cout << "Enter Zipcode: ";
                     std::cin >> zipcode;
+                    if (!isAlphanumeric(zipcode)){
+                        cout << "Input not valid" << endl;
+                        cin.clear();
+                        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    }
                     filteredTree = RedBlackTree();
                     for (auto& node : rbTree.searchByZipcode(zipcode)) {
                         filteredTree.insert(node->ID, node->severity, node->distance, node->city, node->state, node->zipcode);
@@ -257,13 +286,12 @@ void menuRedBlackTree(RedBlackTree& rbTree) {
                 }
                 auto end = std::chrono::system_clock::now();
                 std::chrono::duration<double> elapsed_seconds = end - start;
-
-                filteredTree.inorder();
                 std::cout << "\nElapsed Time: " << elapsed_seconds.count() << "s" << std::endl;
 
                 std::cout << "Do you want to apply another filter? (y/n): ";
                 std::cin >> continueFiltering;
             }
+            filteredTree.inorder();
         } else if (choice == 6) {
             std::cout << "Exiting Red Black Tree Menu." << std::endl;
             break;
@@ -415,18 +443,38 @@ void menuHashTable(HashTable& hashTable) {
                 if (searchType == 1) {
                     cout << "Enter Severity: ";
                     cin >> severity;
+                    if (!isAlphanumeric(to_string(severity))){
+                        cout << "Input not valid" << endl;
+                        cin.clear();
+                        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    }
                     filteredTable = filteredTable.searchBySeverity(severity);
                 } else if (searchType == 2) {
                     cout << "Enter City: ";
                     cin >> city;
+                    if (!isAlphanumeric(city)){
+                        cout << "Input not valid" << endl;
+                        cin.clear();
+                        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    }
                     filteredTable = filteredTable.searchByCity(city);
                 } else if (searchType == 3) {
                     cout << "Enter State: ";
                     cin >> state;
+                    if (!isAlphanumeric(state)){
+                        cout << "Input not valid" << endl;
+                        cin.clear();
+                        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    }
                     filteredTable = filteredTable.searchByState(state);
                 } else if (searchType == 4) {
                     cout << "Enter Zipcode: ";
                     cin >> zipcode;
+                    if (!isAlphanumeric(city)){
+                        cout << "Input not valid" << endl;
+                        cin.clear();
+                        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    }
                     filteredTable = filteredTable.searchByZipcode(zipcode);
                 } else {
                     cout << "Invalid search type, please try again." << endl;
