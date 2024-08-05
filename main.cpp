@@ -235,7 +235,7 @@ void menuRedBlackTree(RedBlackTree& rbTree) {
                 if (searchType == 1) {
                     std::cout << "Enter Severity: ";
                     std::cin >> severity;
-                    if (!isAlphanumeric(to_string(severity))){
+                    if (!isdigit(severity)){
                         cout << "Input not valid" << endl;
                         cin.clear();
                         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -443,8 +443,8 @@ void menuHashTable(HashTable& hashTable) {
                 if (searchType == 1) {
                     cout << "Enter Severity: ";
                     cin >> severity;
-                    if (!isAlphanumeric(to_string(severity))){
-                        cout << "Input not valid" << endl; //asi no se buguea el menu
+                    if (!isdigit(severity)){
+                        cout << "Input not valid" << endl;
                         cin.clear();
                         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                     }
