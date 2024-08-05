@@ -444,7 +444,7 @@ void menuHashTable(HashTable& hashTable) {
                     cout << "Enter Severity: ";
                     cin >> severity;
                     if (!isAlphanumeric(to_string(severity))){
-                        cout << "Input not valid" << endl;
+                        cout << "Input not valid" << endl; //asi no se buguea el menu
                         cin.clear();
                         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                     }
