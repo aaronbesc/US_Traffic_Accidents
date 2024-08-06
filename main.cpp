@@ -4,7 +4,6 @@
 #include <sstream>
 #include <fstream>
 #include <chrono>
-#include <cmath>
 #include <algorithm>
 
 bool isAlphanumeric(const std::string& str) {
