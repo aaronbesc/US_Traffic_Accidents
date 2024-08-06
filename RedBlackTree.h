@@ -1,6 +1,3 @@
-#ifndef REDANDBLACK_H
-#define REDANDBLACK_H
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -51,5 +48,3 @@ public:
     std::vector<Node*> searchByState(const std::string& state) const;
     std::vector<Node*> searchByZipcode(const std::string& zipcode) const;
 };
-
-#endif // REDANDBLACK_H
