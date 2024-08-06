@@ -306,3 +306,58 @@ std::vector<Node*> RedBlackTree::searchByState(const std::string& state) const {
 std::vector<Node*> RedBlackTree::searchByZipcode(const std::string& zipcode) const {
     return const_cast<RedBlackTree*>(this)->find(0, "", "", zipcode);
 }
+
+std::vector<Node*> RedBlackTree::getAllNodes() const {
+    std::vector<Node*> nodes;
+    inorderTraversal(root, nodes);
+    return nodes;
+}
+
+void RedBlackTree::inorderTraversal(Node* node, std::vector<Node*>& nodes) const {
+    if (node == nullptr) {
+        return;
+    }
+    inorderTraversal(node->left, nodes);
+    nodes.push_back(node);
+    inorderTraversal(node->right, nodes);
+}
+
+std::vector<Node*> RedBlackTree::filterBySeverity(const std::vector<Node*>& nodes, int severity) const {
+    std::vector<Node*> filtered;
+    for (const auto& node : nodes) {
+        if (node->severity == severity) {
+            filtered.push_back(node);
+        }
+    }
+    return filtered;
+}
+
+std::vector<Node*> RedBlackTree::filterByCity(const std::vector<Node*>& nodes, const std::string& city) const {
+    std::vector<Node*> filtered;
+    for (const auto& node : nodes) {
+        if (node->city == city) {
+            filtered.push_back(node);
+        }
+    }
+    return filtered;
+}
+
+std::vector<Node*> RedBlackTree::filterByState(const std::vector<Node*>& nodes, const std::string& state) const {
+    std::vector<Node*> filtered;
+    for (const auto& node : nodes) {
+        if (node->state == state) {
+            filtered.push_back(node);
+        }
+    }
+    return filtered;
+}
+
+std::vector<Node*> RedBlackTree::filterByZipcode(const std::vector<Node*>& nodes, const std::string& zipcode) const {
+    std::vector<Node*> filtered;
+    for (const auto& node : nodes) {
+        if (node->zipcode == zipcode) {
+            filtered.push_back(node);
+        }
+    }
+    return filtered;
+}

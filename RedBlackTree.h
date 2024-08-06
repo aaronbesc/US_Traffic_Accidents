@@ -30,6 +30,7 @@ private:
     void inorderHelper(Node* node);
     void findHelper(Node* node, int severity, const std::string& city, const std::string& state, const std::string& zipcode, std::vector<Node*>& result);
     void transplant(Node* u, Node* v);
+    void inorderTraversal(Node* node, std::vector<Node*>& nodes) const;
 
 public:
     RedBlackTree();
@@ -40,11 +41,15 @@ public:
     void inorder();
     std::vector<Node*> find(int severity, const std::string& city, const std::string& state, const std::string& zipcode);
 
-    // New functions
     bool isEmpty() const;
     int getSize() const;
     std::vector<Node*> searchBySeverity(int severity) const;
     std::vector<Node*> searchByCity(const std::string& city) const;
     std::vector<Node*> searchByState(const std::string& state) const;
     std::vector<Node*> searchByZipcode(const std::string& zipcode) const;
+    std::vector<Node*> getAllNodes() const;
+    std::vector<Node*> filterBySeverity(const std::vector<Node*>& nodes, int severity) const;
+    std::vector<Node*> filterByCity(const std::vector<Node*>& nodes, const std::string& city) const;
+    std::vector<Node*> filterByState(const std::vector<Node*>& nodes, const std::string& state) const;
+    std::vector<Node*> filterByZipcode(const std::vector<Node*>& nodes, const std::string& zipcode) const;
 };
